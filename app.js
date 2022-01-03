@@ -9,6 +9,7 @@ const { errors } = require("celebrate");
 const articlesRouter = require("./routes/articles");
 const usersRouter = require("./routes/users");
 const { requestLogger, errorLogger } = require("./middleware/logger");
+const { errorHandler } = require("./utils/errorHandler");
 
 const { PORT = 3000, DB_ADDRESS } = process.env;
 const app = express();
@@ -18,7 +19,6 @@ const limiter = rateLimit({
   max: 100,
 });
 
-app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,24 +26,14 @@ app.use(cors());
 app.options("*", cors());
 mongoose.connect(DB_ADDRESS);
 app.use(requestLogger);
-
+app.use(limiter);
 app.use("/", usersRouter, articlesRouter);
 
-app.use(errorLogger);
-// Centralized error handling
 app.use((err, req, res, next) => {
-  if (err.name === "CastError") {
-    res.status(400).send({ message: "Invalid object" });
-  } else {
-    const { statusCode = 500, message } = err;
-    res.status(statusCode).send({
-      message:
-        statusCode === 500
-          ? `An error has occured on the server: ${message}`
-          : message,
-    });
-  }
+  errorHandler(err, res);
 });
+app.use(errorLogger);
+
 app.use(errors());
 
 app.get("*", (req, res) => {
