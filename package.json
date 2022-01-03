@@ -4,7 +4,10 @@
   "description": "Practicum 100 final web dev course project (backend part)",
   "main": "index.js",
   "devDependencies": {
-    "eslint": "^8.6.0"
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4"
   },
   "scripts": {
     "dev": "nodemon app.js",

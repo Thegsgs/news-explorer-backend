@@ -1,6 +1,8 @@
+const { celebrate, Joi } = require("celebrate");
+const validator = require("validator");
 const router = require("express").Router();
 const auth = require("../middleware/auth");
-const { celebrate, Joi } = require("celebrate");
+
 const {
   getArticles,
   saveArticle,
