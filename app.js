@@ -33,7 +33,7 @@ app.use(errorLogger);
 // Centralized error handling
 app.use((err, req, res, next) => {
   if (err.statusCode === 404) {
-    res.send({ message: "Requested resource not found." });
+    res.status(404).send({ message: "Requested resource not found." });
   }
   if (err.name === "CastError") {
     res.status(400).send({ message: "Invalid object" });
