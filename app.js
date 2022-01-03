@@ -33,6 +33,9 @@ app.use("/", usersRouter, articlesRouter);
 app.use(errorLogger);
 // Centralized error handling
 app.use((err, req, res, next) => {
+  if (err.statusCode === 404) {
+    res.send({ message: "Requested resource not found." });
+  }
   if (err.name === "CastError") {
     res.status(400).send({ message: "Invalid object" });
   } else {
@@ -46,8 +49,4 @@ app.use((err, req, res, next) => {
   }
 });
 app.use(errors());
-
-app.get("*", (req, res) => {
-  throw new NotFoundError("Requested resource not found.");
-});
 app.listen(PORT);
