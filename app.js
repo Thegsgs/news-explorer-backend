@@ -9,7 +9,6 @@ const { errors } = require("celebrate");
 const articlesRouter = require("./routes/articles");
 const usersRouter = require("./routes/users");
 const { requestLogger, errorLogger } = require("./middleware/logger");
-const NotFoundError = require("./errors/not-found-err");
 
 const { PORT = 3000, DB_ADDRESS } = process.env;
 const app = express();
