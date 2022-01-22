@@ -13,18 +13,18 @@ const orFailSettings = () => {
 };
 
 const createUser = (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, username } = req.body;
 
   User.findOne({ email })
     .then((user) => {
       if (!user) {
         return bcrypt
           .hash(password, 10)
-          .then((hash) => User.create({ email, name, password: hash }))
+          .then((hash) => User.create({ email, username, password: hash }))
           .then((createdUser) =>
             handleResponse(res, {
               email: createdUser.email,
-              name: createdUser.name,
+              username: createdUser.username,
               _id: createdUser._id,
             })
           )
